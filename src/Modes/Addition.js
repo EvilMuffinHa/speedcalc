@@ -1,4 +1,4 @@
-
+// Just for testing the generator
 export const FINAL = 5;
 export const NAME = "Addition";
 
