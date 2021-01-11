@@ -1,0 +1,12 @@
+.Game {
+    text-align: center;
+}
+
+.Game h1 {
+    letter-spacing: 0.13em;
+}
+
+.sep {
+    display: block;
+    padding-bottom: 50%;
+}
