@@ -59,7 +59,9 @@ class App extends React.Component {
                     <h1>Speedcalc</h1>
                 </div>
                 {modes.map((n, index) => (
-                <Button key={index} onClick={() => this.selectLevel(index)}>{n[2]}</Button>
+                    <div className="grid-container">
+                        <Button key={index} className="grid-item" onClick={() => this.selectLevel(index)}>{n[2]}</Button>
+                    </div>
                 ))}
                 </div>
             )
@@ -68,7 +70,6 @@ class App extends React.Component {
             for (let i = 0; i < this.state.menu.mode[1]; i++) {
                 selections.push(i + 1);
             }
-            console.log(selections);
             return ( <div className="Menu">
                 <div className="Header">
                     <h2>{this.state.menu.name}</h2>

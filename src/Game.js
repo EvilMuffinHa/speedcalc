@@ -2,8 +2,9 @@ import React from 'react';
 import Timer from './Timer';
 import './Game.css';
 import styled from "styled-components";
-import katex from "katex";
-import {latexOptions} from "./LatexOptions.js";
+import 'katex/dist/katex.min.css';
+import { InlineMath } from 'react-katex';
+
 
 
 const Button = styled.button`
@@ -34,13 +35,14 @@ export default class Game extends React.Component {
                 <Timer />
                 <div className="Problems">
                     {problems.map((n, index) => (
-                        <p key={index} dangerouslySetInnerHTML={{__html: n.toString() + ". &nbsp;&nbsp;" + katex.renderToString(this.props.level.generator(levelno).question, latexOptions)}}></p>
+                        // <p key={index} dangerouslySetInnerHTML={{__html: n.toString() + ". &nbsp;&nbsp;" + katex.renderToString(this.props.level.generator(levelno).question, latexOptions)}}></p>
+                        <p key={index}>{n.toString() + "."}&nbsp;&nbsp;<InlineMath>{this.props.level.generator(levelno).question}</InlineMath></p>
                     ))}</div>
                 <div className="sep"></div>
                 <div className="Answers">
                     
                     {problems.map((n, index) => (
-                        <p key={index} dangerouslySetInnerHTML={{__html: n.toString() + ". &nbsp;&nbsp;" + katex.renderToString(this.props.level.generator(levelno).solution, latexOptions)}}></p>
+                        <p key={index}>{n.toString() + "."}&nbsp;&nbsp;<InlineMath>{this.props.level.generator(levelno).solution}</InlineMath></p>
                         ))}</div>
             </div>
         )
