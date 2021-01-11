@@ -93,8 +93,39 @@ export default function differentiation(levelno) {
     }
     let fx = functions[0];
     for (let i = 1; i < functions.length; i++) {
+        let notpoly = [
+            "\\sin({x})",
+            "\\cos({x})",
+            "\\tan({x})",
+            "\\sec({x})",
+            "\\csc({x})",
+            "\\cot({x})",
+            "\\log_2({x})",
+            "\\ln({x})",
+            "2^{x}",
+            "e^{x}"
+        ];
+        let chainallowed = false;
         let fx1 = functions[i];
-        let combinator = stdrules[Math.floor(Math.random() * stdrules.length)];
+        for (let f in notpoly) {
+            if (fx1.includes(f)) {
+                chainallowed = true;
+            }
+        }
+        if (fx === functions[0]) {
+            for (let g in notpoly) {
+                if (fx.includes(g)) {
+                    chainallowed = true;
+                }
+            }
+        }
+        let combinator = "";
+        if (chainallowed) {
+            combinator = stdrules[Math.floor(Math.random() * stdrules.length)];
+        } else {
+            combinator = stdrules[Math.floor(Math.random() * (stdrules.length - 1)) + 1];
+        }
+        console.log(chainallowed);
         if (combinator === "chain") {
             fx = fx.replaceAll("x", fx1);
         } else if (combinator === "product") {
