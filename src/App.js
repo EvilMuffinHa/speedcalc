@@ -59,7 +59,7 @@ class App extends React.Component {
                     <h1>Speedcalc</h1>
                 </div>
                 {modes.map((n, index) => (
-                    <div className="grid-container">
+                    <div key={index} className="grid-container">
                         <Button key={index} className="grid-item" onClick={() => this.selectLevel(index)}>{n[2]}</Button>
                     </div>
                 ))}

@@ -1,4 +1,4 @@
-export const FINAL = 1;
+export const FINAL = 4;
 export const NAME = "Differentiation";
 
 let gcd = function(a, b) {
@@ -12,18 +12,28 @@ let gcd = function(a, b) {
 
 
 export default function differentiation(levelno) {
-    let stdfx = [
-        "poly",
-        "trig",
-        "exp"
-    ]
+    let stdfx = [];
+    let lvl = levelno;
+    if (levelno === 1) {
+        stdfx = ["poly"];
+    } else if (levelno === 2) {
+        stdfx = ["trig", "exp"];
+        lvl = 1;
+    } else {
+        stdfx = [
+            "poly",
+            "trig",
+            "exp"
+        ]
+        lvl -= 2;
+    }
     let stdrules = [
         "chain",
         "product",
         "quotient"
     ]
     let functions = [];
-    for (let i = 0; i < levelno+1; i++) {
+    for (let i = 0; i < lvl; i++) {
         let fxtype = stdfx[Math.floor(Math.random() * stdfx.length)];
         if (fxtype === "poly") {
             let maxdepth = 6;
@@ -110,13 +120,6 @@ export default function differentiation(levelno) {
         for (let f in notpoly) {
             if (fx1.includes(f)) {
                 chainallowed = true;
-            }
-        }
-        if (fx === functions[0]) {
-            for (let g in notpoly) {
-                if (fx.includes(g)) {
-                    chainallowed = true;
-                }
             }
         }
         let combinator = "";
