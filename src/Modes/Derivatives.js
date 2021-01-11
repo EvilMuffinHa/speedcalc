@@ -12,7 +12,7 @@ let gcd = function(a, b) {
 
 
 export default function differentiation(levelno) {
-    let stdfx = [];
+    let stdfx;
     let lvl = levelno;
     if (levelno === 1) {
         stdfx = ["poly"];
