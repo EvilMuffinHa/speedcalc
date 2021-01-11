@@ -1,7 +1,7 @@
 export const FINAL = 1;
 export const NAME = "Differentiation";
 
-var gcd = function(a, b) {
+let gcd = function(a, b) {
     if (!b) {
       return a;
     }
@@ -30,8 +30,8 @@ export default function differentiation(levelno) {
             let polynom = "";
             let str = "";
             for (let j = maxdepth; j >= 0; j--) {
-                let top = Math.floor(Math.random() * 9) + 1;
-                let bottom = Math.floor(Math.random() * 9) + 1;
+                let top = Math.floor(Math.random() * 4) + 1;
+                let bottom = Math.floor(Math.random() * 4) + 1;
                 let zerochance = Math.floor(Math.random() * 2);
                 if (zerochance !== 0) {
                     if (gcd(top, bottom) !== 1) {
@@ -48,20 +48,23 @@ export default function differentiation(levelno) {
                         str = "";
                     }
                     if (j === 1) {
-                        polynom += str + "x + ";
+                        polynom += str + "{x} + ";
                     } else if (j === 0) {
                         if (str === "") {
                             str = "1"
                         }
                         polynom += str;
                     } else {
-                        polynom += str + "x^" + j.toString() + " + ";
+                        polynom += str + "{x}^" + j.toString() + " + ";
                     }
                 } else {
                     if (j === 0) {
                         polynom = polynom.substr(0, polynom.length - 2);
                     }
                 }
+            }
+            if (polynom === "") {
+                polynom = "0";
             }
             functions.push(polynom);
         }
@@ -101,5 +104,6 @@ export default function differentiation(levelno) {
         }
 
     }
+    console.log(fx);
     return {question:fx, solution:"1"}
 }
