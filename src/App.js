@@ -1,6 +1,6 @@
-import Game from "./Game"
-import {modes} from "./Modules.js"
-import "./App.css"
+import Game from "./Game";
+import {modes} from "./Modules.js";
+import "./App.css";
 import styled from "styled-components";
 import React from "react";
 // import Level from "./Level"
@@ -20,7 +20,7 @@ class App extends React.Component {
         super(p);
         this.state = {
             menu: false
-        }
+        };
         this.mainMenu = this.mainMenu.bind(this);
         this.selectLevel = this.selectLevel.bind(this);
     }
@@ -38,7 +38,7 @@ class App extends React.Component {
                 mode: modes[ind],
                 level: false
             }
-        })
+        });
     }
 
     play(levelno) {
@@ -48,7 +48,7 @@ class App extends React.Component {
                 mode: this.state.menu.mode,
                 level: levelno
             }
-        })
+        });
     }
 
     render() {
@@ -64,7 +64,7 @@ class App extends React.Component {
                     </div>
                 ))}
                 </div>
-            )
+            );
         } else if (!this.state.menu.level) {
             let selections = [];
             for (let i = 0; i < this.state.menu.mode[1]; i++) {

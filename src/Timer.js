@@ -44,9 +44,10 @@ export default class Timer extends React.Component {
     }
 
     reset() {
+        // eslint-disable-next-line no-unused-vars
         this.setState(state => ({
             ms: 0
-        }))
+        }));
     }
 
     stop() {
@@ -77,6 +78,6 @@ export default class Timer extends React.Component {
                     <Button onClick={() => this.start()}>Start</Button>
                 </div>
             </div>
-        )
+        );
     }
 }

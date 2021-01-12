@@ -3,6 +3,7 @@ import styled from "styled-components";
 import "./Level.css";
 
 
+// eslint-disable-next-line no-unused-vars
 const Button = styled.button`
     background-color: black;
     color: white;
@@ -22,10 +23,11 @@ export default class Level extends React.Component {
         return (
             <div className="Level">
                 <div className="Header">
+                    {/* eslint-disable-next-line react/prop-types */}
                     <h1>{this.props.name}</h1>
                 </div>
 
             </div>
-        )
+        );
     }
 }

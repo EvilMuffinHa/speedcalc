@@ -5,4 +5,4 @@ import differentiation, { FINAL as diffF, NAME as diffN } from "./Modes/Derivati
 export const modes = [
     [addition, additionF, additionN],
     [differentiation, diffF, diffN]
-]
+];

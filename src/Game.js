@@ -20,6 +20,7 @@ const Button = styled.button`
 export default class Game extends React.Component {
 
     render() {
+        /* eslint-disable react/prop-types */
         let levelno = this.props.level.number;
         let problems = [];
         let sets = [];
@@ -47,7 +48,7 @@ export default class Game extends React.Component {
                         <p key={index}>{(index + 1).toString() + "."}&nbsp;&nbsp;<InlineMath>{n.solution}</InlineMath></p>
                         ))}</div>
             </div>
-        )
+        );
     }
 
 }

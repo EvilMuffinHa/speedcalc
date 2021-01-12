@@ -25,6 +25,6 @@ export default function addition(levelno) {
         while (num2.startsWith("0")) {
             num2 = num2.substr(1, num2.length);
         }
-        return {question: num1 + " + " + num2 + "= ", solution: sol}
+        return {question: num1 + " + " + num2 + "= ", solution: sol};
     }
 }

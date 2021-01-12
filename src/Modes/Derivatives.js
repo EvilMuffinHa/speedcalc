@@ -7,7 +7,7 @@ let gcd = function(a, b) {
     }
   
     return gcd(b, a % b);
-  }
+  };
 
 
 
@@ -24,14 +24,14 @@ export default function differentiation(levelno) {
             "poly",
             "trig",
             "exp"
-        ]
+        ];
         lvl -= 2;
     }
     let stdrules = [
         "chain",
         "product",
         "quotient"
-    ]
+    ];
     let functions = [];
     for (let i = 0; i < lvl; i++) {
         let fxtype = stdfx[Math.floor(Math.random() * stdfx.length)];
@@ -47,7 +47,7 @@ export default function differentiation(levelno) {
                 let zerochance = Math.floor(Math.random() * 2);
                 if (zerochance !== 0) {
                     if (gcd(top, bottom) !== 1) {
-                        let fgcd = gcd(top, bottom)
+                        let fgcd = gcd(top, bottom);
                         top /= fgcd;
                         bottom /= fgcd;
                     }
@@ -82,7 +82,7 @@ export default function differentiation(levelno) {
                         polynom += str + "{x} + ";
                     } else if (j === 0) {
                         if (str === "") {
-                            str = "1"
+                            str = "1";
                         }
                         polynom += str;
                     } else {
@@ -92,7 +92,7 @@ export default function differentiation(levelno) {
                         deriv += ds + "{x} + ";
                     } else if (j === 1) {
                         if (ds === "") {
-                            ds = "1"
+                            ds = "1";
                         }
                         deriv += ds;
                     } else if (j === 0) {
@@ -127,7 +127,7 @@ export default function differentiation(levelno) {
                 ["\\sec^{-1}({x})", "\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
                 ["\\csc^{-1}({x})", "-\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
                 ["\\cot^{-1}({x})", "-\\frac{1}{\\sqrt{1 + x^2}}"],
-            ]
+            ];
             let selectedTrig = choices[Math.floor(Math.random() * choices.length)];
             functions.push(selectedTrig);
         }
@@ -137,7 +137,7 @@ export default function differentiation(levelno) {
                 ["\\log_2({x})", "\\frac{1}{\\ln(2){x}}"],
                 ["2^{x}", "\\ln(2)2^{x}"],
                 ["e^{x}", "e^{x}"]
-            ]
+            ];
             let selectedExp = choices[Math.floor(Math.random() * choices.length)];
             functions.push(selectedExp);
         }
@@ -163,16 +163,9 @@ export default function differentiation(levelno) {
             "2^{x}",
             "e^{x}"
         ];
-        let chainallowed = false;
         let fx1 = functions[i][0];
         let fx1d = functions[i][1];
-        for (let l = 0; l < notpoly.length; l++) {
-            if (fx1.includes(notpoly[l])) {
-                chainallowed = true;
-            }
-        }
-        console.log(chainallowed);
-        console.log(functions);
+        const chainallowed = notpoly.some(l => fx1.includes(l));
         let combinator = "";
         if (chainallowed) {
             combinator = stdrules[Math.floor(Math.random() * stdrules.length)];
@@ -183,13 +176,13 @@ export default function differentiation(levelno) {
             fxderiv = "(" + fxderiv.replaceAll("x", "{" + fx1 + "}") + ")(" + fx1d + ")";
             fx = fx.replaceAll("x", "{" + fx1 + "}");
         } else if (combinator === "product") {
-            fxderiv = "(" + fxderiv + ")(" + fx1 + ") + (" + fx1d + ")(" + fx + ")";
-            fx = "(" + fx + ")(" + fx1 + ")";
+            fxderiv = `(${fxderiv})(${fx1}) + (${fx1d})(${fx})`;
+            fx = `(${fx})(${fx1})`;
         } else {
-            fxderiv = "\\frac{(" + fxderiv + ")(" + fx1 + ") - (" + fx1d + ")(" + fx + ")}{{(" + fx1 + ")}^2}";
-            fx = "\\frac{" + fx + "}{" + fx1 + "}";
+            fxderiv = `\\frac{(${fxderiv})(${fx1}) - (${fx1d})(${fx})}{{(${fx1})}^2}`;
+            fx = `\\frac{${fx}}{${fx1}}`;
         }
 
     }
-    return {question:fx, solution:fxderiv}
+    return {question:fx, solution:fxderiv};
 }
