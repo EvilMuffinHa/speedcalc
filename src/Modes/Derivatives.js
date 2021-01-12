@@ -39,6 +39,8 @@ export default function differentiation(levelno) {
             let maxdepth = 6;
             let polynom = "";
             let str = "";
+            let deriv = "";
+            let ds = "";
             for (let j = maxdepth; j >= 0; j--) {
                 let top = Math.floor(Math.random() * 4) + 1;
                 let bottom = Math.floor(Math.random() * 4) + 1;
@@ -49,13 +51,32 @@ export default function differentiation(levelno) {
                         top /= fgcd;
                         bottom /= fgcd;
                     }
+                    let td = top * j;
+                    let bd = bottom;
+                    if (gcd(td, bd) !== 1) {
+                        let fgcd = gcd(td, bd);
+                        td /= fgcd;
+                        bd /= fgcd;
+                    }
+
                     if (bottom !== 1) {
                         str = "\\frac{" + top.toString() + "}{" + bottom.toString() + "}";
                     } else {
                         str = top.toString();
                     }
+                    if (bd !== 1) {
+                        ds = "\\frac{" + td.toString() + "}{" + bd.toString() + "}";
+                    } else {
+                        ds = td.toString();
+                    }
                     if (str === "1") {
                         str = "";
+                    }
+                    if (ds === "1") {
+                        ds = "";
+                    }
+                    if (td === 0) {
+                        ds = "";
                     }
                     if (j === 1) {
                         polynom += str + "{x} + ";
@@ -67,41 +88,62 @@ export default function differentiation(levelno) {
                     } else {
                         polynom += str + "{x}^" + j.toString() + " + ";
                     }
+                    if (j === 2) {
+                        deriv += ds + "{x} + ";
+                    } else if (j === 1) {
+                        if (ds === "") {
+                            ds = "1"
+                        }
+                        deriv += ds;
+                    } else if (j === 0) {
+                        deriv += ds;
+                    } else {
+                        deriv += ds + "{x}^" + (j - 1).toString() + " + ";
+                    }
                 } else {
                     if (j === 0) {
                         polynom = polynom.substr(0, polynom.length - 2);
+                    } if (j === 1) {
+                        deriv = deriv.substr(0, deriv.length - 2);
                     }
                 }
             }
             if (polynom === "") {
                 polynom = "0";
             }
-            functions.push(polynom);
+            functions.push([polynom, deriv]);
         }
         else if (fxtype === "trig") {
             let choices = [
-                "\\sin({x})",
-                "\\cos({x})",
-                "\\tan({x})",
-                "\\sec({x})",
-                "\\csc({x})",
-                "\\cot({x})"
+                ["\\sin({x})", "\\cos({x})"],
+                ["\\cos({x})", "-\\sin({x})"],
+                ["\\tan({x})", "\\sec({x})^2"],
+                ["\\sec({x})", "\\tan({x})\\sec({x})"],
+                ["\\csc({x})", "-\\cot({x})\\csc({x})"],
+                ["\\cot({x})", "-\\csc({x})^2"],
+                ["\\arcsin({x})", "\\frac{1}{\\sqrt{1 - x^2}}"],
+                ["\\arccos({x})", "-\\frac{1}{\\sqrt{1 - x^2}}"],
+                ["\\arctan({x})", "\\frac{1}{\\sqrt{1 + x^2}}"],
+                ["\\arcsec({x})", "\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
+                ["\\arccsc({x})", "-\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
+                ["\\arccot({x})", "-\\frac{1}{\\sqrt{1 + x^2}}"],
             ]
             let selectedTrig = choices[Math.floor(Math.random() * choices.length)];
             functions.push(selectedTrig);
         }
         else {
             let choices = [
-                "\\log_2({x})",
-                "\\ln({x})",
-                "2^{x}",
-                "e^{x}"
+                ["\\ln({x})", "\\frac{1}{x}"],
+                ["\\log_2({x})", "\\frac{1}{\\ln(2){x}}"],
+                ["2^{x}", "\\ln(2)2^{x}"],
+                ["e^{x}", "e^{x}"]
             ]
             let selectedExp = choices[Math.floor(Math.random() * choices.length)];
             functions.push(selectedExp);
         }
     }
-    let fx = functions[0];
+    let fx = functions[0][0];
+    let fxderiv = functions[0][1];
     for (let i = 1; i < functions.length; i++) {
         let notpoly = [
             "\\sin({x})",
@@ -110,13 +152,20 @@ export default function differentiation(levelno) {
             "\\sec({x})",
             "\\csc({x})",
             "\\cot({x})",
+            "\\arcsin({x})",
+            "\\arccos({x})",
+            "\\arctan({x})",
+            "\\arcsec({x})",
+            "\\arccsc({x})",
+            "\\arccot({x})",
             "\\log_2({x})",
             "\\ln({x})",
             "2^{x}",
             "e^{x}"
         ];
         let chainallowed = false;
-        let fx1 = functions[i];
+        let fx1 = functions[i][0];
+        let fx1d = functions[i][1];
         for (let f in notpoly) {
             if (fx1.includes(f)) {
                 chainallowed = true;
@@ -128,16 +177,17 @@ export default function differentiation(levelno) {
         } else {
             combinator = stdrules[Math.floor(Math.random() * (stdrules.length - 1)) + 1];
         }
-        console.log(chainallowed);
         if (combinator === "chain") {
             fx = fx.replaceAll("x", fx1);
+            fxderiv = "(" + fxderiv.replaceAll("x", fx1) + ")(" + fx1d + ")";
         } else if (combinator === "product") {
             fx = "(" + fx + ")(" + fx1 + ")";
+            fxderiv = "(" + fxderiv + ")(" + fx1 + ") + (" + fx1d + ")(" + fx + ")";
         } else {
             fx = "\\frac{" + fx + "}{" + fx1 + "}";
+            fxderiv = "\\frac{(" + fxderiv + ")(" + fx1 + ") - (" + fx1d + ")(" + fx + ")}{{" + fx1 + "}^2}";
         }
 
     }
-    console.log(fx);
-    return {question:fx, solution:"1"}
+    return {question:fx, solution:fxderiv}
 }
