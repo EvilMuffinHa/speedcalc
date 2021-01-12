@@ -1,5 +1,10 @@
+import { create, all } from "mathjs";
+
 export const FINAL = 4;
 export const NAME = "Differentiation";
+const config = {
+};
+const math = create(all, config);
 
 let gcd = function(a, b) {
     if (!b) {
@@ -10,8 +15,8 @@ let gcd = function(a, b) {
   };
 
 
-
 export default function differentiation(levelno) {
+    math.derivative("x^2 + x", "x");
     let stdfx;
     let lvl = levelno;
     if (levelno === 1) {
@@ -38,7 +43,9 @@ export default function differentiation(levelno) {
         if (fxtype === "poly") {
             let maxdepth = 6;
             let polynom = "";
+            let polynomM = "";
             let str = "";
+            let strM = "";
             let deriv = "";
             let ds = "";
             for (let j = maxdepth; j >= 0; j--) {
@@ -61,8 +68,10 @@ export default function differentiation(levelno) {
 
                     if (bottom !== 1) {
                         str = "\\frac{" + top.toString() + "}{" + bottom.toString() + "}";
+                        strM += "(" + top.toString() + "/" + bottom.toString() + ")";
                     } else {
                         str = top.toString();
+                        strM = top.toString();
                     }
                     if (bd !== 1) {
                         ds = "\\frac{" + td.toString() + "}{" + bd.toString() + "}";
@@ -71,6 +80,7 @@ export default function differentiation(levelno) {
                     }
                     if (str === "1") {
                         str = "";
+                        strM = "";
                     }
                     if (ds === "1") {
                         ds = "";
@@ -80,13 +90,17 @@ export default function differentiation(levelno) {
                     }
                     if (j === 1) {
                         polynom += str + "{x} + ";
+                        polynomM += strM + "(x) + ";
                     } else if (j === 0) {
                         if (str === "") {
                             str = "1";
+                            strM = "1";
                         }
                         polynom += str;
+                        polynomM += strM;
                     } else {
                         polynom += str + "{x}^" + j.toString() + " + ";
+                        polynomM += strM + "(x)^" + j.toString() + " + ";
                     }
                     if (j === 2) {
                         deriv += ds + "{x} + ";
@@ -103,6 +117,7 @@ export default function differentiation(levelno) {
                 } else {
                     if (j === 0) {
                         polynom = polynom.substr(0, polynom.length - 2);
+                        polynomM = polynomM.substr(0, polynomM.length - 2);
                     } if (j === 1) {
                         deriv = deriv.substr(0, deriv.length - 2);
                     }
@@ -110,61 +125,58 @@ export default function differentiation(levelno) {
             }
             if (polynom === "") {
                 polynom = "0";
+                polynomM = "0";
             }
-            functions.push([polynom, deriv]);
+            functions.push([polynom, polynomM]);
         }
         else if (fxtype === "trig") {
             let choices = [
-                ["\\sin({x})", "\\cos({x})"],
-                ["\\cos({x})", "-\\sin({x})"],
-                ["\\tan({x})", "\\sec({x})^2"],
-                ["\\sec({x})", "\\tan({x})\\sec({x})"],
-                ["\\csc({x})", "-\\cot({x})\\csc({x})"],
-                ["\\cot({x})", "-\\csc({x})^2"],
-                ["\\arcsin({x})", "\\frac{1}{\\sqrt{1 - x^2}}"],
-                ["\\arccos({x})", "-\\frac{1}{\\sqrt{1 - x^2}}"],
-                ["\\arctan({x})", "\\frac{1}{\\sqrt{1 + x^2}}"],
-                ["\\sec^{-1}({x})", "\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
-                ["\\csc^{-1}({x})", "-\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
-                ["\\cot^{-1}({x})", "-\\frac{1}{\\sqrt{1 + x^2}}"],
+                ["\\sin{({x})}","sin(x)", "\\cos{({x})}"],
+                ["\\cos{({x})}","cos(x)", "-\\sin{({x})}"],
+                ["\\tan{({x})}","tan(x)", "\\sec{({x})}^2"],
+                ["\\sec{({x})}","sec(x)", "\\tan{({x})}\\sec{({x})}"],
+                ["\\csc{({x})}","csc(x)", "-\\cot{({x})}\\csc{({x})}"],
+                ["\\cot{({x})}","cot(x)", "-\\csc{({x})}^2"],
+                ["\\asin{({x})}","asin(x)", "\\frac{1}{\\sqrt{1 - x^2}}"],
+                ["\\acos{({x})}","acos(x)", "-\\frac{1}{\\sqrt{1 - x^2}}"],
+                ["\\atan{({x})}","atan(x)", "\\frac{1}{\\sqrt{1 + x^2}}"],
+                ["\\asec{({x})}","asec(x)", "\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
+                ["\\acsc{({x})}","acsc(x)", "-\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
+                ["\\acot{({x})}","acot(x)", "-\\frac{1}{\\sqrt{1 + x^2}}"],
             ];
             let selectedTrig = choices[Math.floor(Math.random() * choices.length)];
-            functions.push(selectedTrig);
+            functions.push([selectedTrig[0], selectedTrig[1]]);
         }
         else {
             let choices = [
-                ["\\ln({x})", "\\frac{1}{x}"],
-                ["\\log_2({x})", "\\frac{1}{\\ln(2){x}}"],
-                ["2^{x}", "\\ln(2)2^{x}"],
-                ["e^{x}", "e^{x}"]
+                ["\\log{({x})}", "log(x)", "\\frac{1}{x}"],
+                ["e^{x}", "e^(x)", "e^{x}"]
             ];
             let selectedExp = choices[Math.floor(Math.random() * choices.length)];
-            functions.push(selectedExp);
+            functions.push([selectedExp[0], selectedExp[1]]);
         }
     }
     let fx = functions[0][0];
-    let fxderiv = functions[0][1];
+    let fxM = functions[0][1];
     for (let i = 1; i < functions.length; i++) {
         let notpoly = [
-            "\\sin({x})",
-            "\\cos({x})",
-            "\\tan({x})",
-            "\\sec({x})",
-            "\\csc({x})",
-            "\\cot({x})",
-            "\\arcsin({x})",
-            "\\arccos({x})",
-            "\\arctan({x})",
-            "\\sec^{-1}({x})",
-            "\\csc^{-1}({x})",
-            "\\cot^{-1}({x})",
-            "\\log_2({x})",
-            "\\ln({x})",
-            "2^{x}",
+            "\\sin{({x})}",
+            "\\cos{({x})}",
+            "\\tan{({x})}",
+            "\\sec{({x})}",
+            "\\csc{({x})}",
+            "\\cot{({x})}",
+            "\\asin{({x})}",
+            "\\cos{({x})}",
+            "\\atan{({x})}",
+            "\\asec{({x})}",
+            "\\acsc{({x})}",
+            "\\acot{({x})}",
+            "\\log{({x})}",
             "e^{x}"
         ];
         let fx1 = functions[i][0];
-        let fx1d = functions[i][1];
+        let fx1M = functions[i][1];
         const chainallowed = notpoly.some(l => fx1.includes(l));
         let combinator = "";
         if (chainallowed) {
@@ -173,16 +185,29 @@ export default function differentiation(levelno) {
             combinator = stdrules[Math.floor(Math.random() * (stdrules.length - 1)) + 1];
         }
         if (combinator === "chain") {
-            fxderiv = "(" + fxderiv.replaceAll("x", "{" + fx1 + "}") + ")(" + fx1d + ")";
             fx = fx.replaceAll("x", "{" + fx1 + "}");
+            fxM = fxM.replaceAll("x", "(" + fx1M + ")");
         } else if (combinator === "product") {
-            fxderiv = `(${fxderiv})(${fx1}) + (${fx1d})(${fx})`;
-            fx = `(${fx})(${fx1})`;
+            fx = `(${fx})\\cdot(${fx1})`;
+            fxM = `(${fxM})*(${fx1M})`;
         } else {
-            fxderiv = `\\frac{(${fxderiv})(${fx1}) - (${fx1d})(${fx})}{{(${fx1})}^2}`;
             fx = `\\frac{${fx}}{${fx1}}`;
+            fxM = `(${fxM})/(${fx1M})`;
         }
-
     }
-    return {question:fx, solution:fxderiv};
+    let deriv = math.simplify(math.derivative(fxM, 'x')).toTex()
+        .replaceAll("acos", "arccos")
+        .replaceAll("asin", "arcsin")
+        .replaceAll("atan", "arctan")
+        .replaceAll("asec", "sec^{-1}")
+        .replaceAll("acsc", "csc^{-1}")
+        .replaceAll("acot", "cot^{-1}");
+    fx = fx.replaceAll("acos", "arccos")
+        .replaceAll("asin", "arcsin")
+        .replaceAll("atan", "arctan")
+        .replaceAll("asec", "sec^{-1}")
+        .replaceAll("acsc", "csc^{-1}")
+        .replaceAll("acot", "cot^{-1}");
+    return {question:fx, solution:deriv};
 }
+
