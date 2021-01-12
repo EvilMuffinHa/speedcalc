@@ -22,8 +22,10 @@ export default class Game extends React.Component {
     render() {
         let levelno = this.props.level.number;
         let problems = [];
+        let sets = [];
         for (let i = 0; i < this.props.problemnum; i ++ ) {
             problems.push(i+1);
+            sets.push(this.props.level.generator(levelno));
         }
         return (
             <div className="Game">
@@ -34,15 +36,15 @@ export default class Game extends React.Component {
                 </div>
                 <Timer />
                 <div className="Problems">
-                    {problems.map((n, index) => (
+                    {sets.map((n, index) => (
                         // <p key={index} dangerouslySetInnerHTML={{__html: n.toString() + ". &nbsp;&nbsp;" + katex.renderToString(this.props.level.generator(levelno).question, latexOptions)}}></p>
-                        <p key={index}>{n.toString() + "."}&nbsp;&nbsp;<InlineMath>{this.props.level.generator(levelno).question}</InlineMath></p>
+                        <p key={index}>{(index + 1).toString() + "."}&nbsp;&nbsp;<InlineMath>{n.question}</InlineMath></p>
                     ))}</div>
                 <div className="sep"></div>
                 <div className="Answers">
                     
-                    {problems.map((n, index) => (
-                        <p key={index}>{n.toString() + "."}&nbsp;&nbsp;<InlineMath>{this.props.level.generator(levelno).solution}</InlineMath></p>
+                    {sets.map((n, index) => (
+                        <p key={index}>{(index + 1).toString() + "."}&nbsp;&nbsp;<InlineMath>{n.solution}</InlineMath></p>
                         ))}</div>
             </div>
         )

@@ -124,9 +124,9 @@ export default function differentiation(levelno) {
                 ["\\arcsin({x})", "\\frac{1}{\\sqrt{1 - x^2}}"],
                 ["\\arccos({x})", "-\\frac{1}{\\sqrt{1 - x^2}}"],
                 ["\\arctan({x})", "\\frac{1}{\\sqrt{1 + x^2}}"],
-                ["\\arcsec({x})", "\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
-                ["\\arccsc({x})", "-\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
-                ["\\arccot({x})", "-\\frac{1}{\\sqrt{1 + x^2}}"],
+                ["\\sec^{-1}({x})", "\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
+                ["\\csc^{-1}({x})", "-\\frac{1}{\\mid {x}\\mid\\sqrt{{x}^2 - 1}}"],
+                ["\\cot^{-1}({x})", "-\\frac{1}{\\sqrt{1 + x^2}}"],
             ]
             let selectedTrig = choices[Math.floor(Math.random() * choices.length)];
             functions.push(selectedTrig);
@@ -155,9 +155,9 @@ export default function differentiation(levelno) {
             "\\arcsin({x})",
             "\\arccos({x})",
             "\\arctan({x})",
-            "\\arcsec({x})",
-            "\\arccsc({x})",
-            "\\arccot({x})",
+            "\\sec^{-1}({x})",
+            "\\csc^{-1}({x})",
+            "\\cot^{-1}({x})",
             "\\log_2({x})",
             "\\ln({x})",
             "2^{x}",
@@ -166,11 +166,13 @@ export default function differentiation(levelno) {
         let chainallowed = false;
         let fx1 = functions[i][0];
         let fx1d = functions[i][1];
-        for (let f in notpoly) {
-            if (fx1.includes(f)) {
+        for (let l = 0; l < notpoly.length; l++) {
+            if (fx1.includes(notpoly[l])) {
                 chainallowed = true;
             }
         }
+        console.log(chainallowed);
+        console.log(functions);
         let combinator = "";
         if (chainallowed) {
             combinator = stdrules[Math.floor(Math.random() * stdrules.length)];
@@ -178,14 +180,14 @@ export default function differentiation(levelno) {
             combinator = stdrules[Math.floor(Math.random() * (stdrules.length - 1)) + 1];
         }
         if (combinator === "chain") {
-            fx = fx.replaceAll("x", fx1);
-            fxderiv = "(" + fxderiv.replaceAll("x", fx1) + ")(" + fx1d + ")";
+            fxderiv = "(" + fxderiv.replaceAll("x", "{" + fx1 + "}") + ")(" + fx1d + ")";
+            fx = fx.replaceAll("x", "{" + fx1 + "}");
         } else if (combinator === "product") {
-            fx = "(" + fx + ")(" + fx1 + ")";
             fxderiv = "(" + fxderiv + ")(" + fx1 + ") + (" + fx1d + ")(" + fx + ")";
+            fx = "(" + fx + ")(" + fx1 + ")";
         } else {
+            fxderiv = "\\frac{(" + fxderiv + ")(" + fx1 + ") - (" + fx1d + ")(" + fx + ")}{{(" + fx1 + ")}^2}";
             fx = "\\frac{" + fx + "}{" + fx1 + "}";
-            fxderiv = "\\frac{(" + fxderiv + ")(" + fx1 + ") - (" + fx1d + ")(" + fx + ")}{{" + fx1 + "}^2}";
         }
 
     }
