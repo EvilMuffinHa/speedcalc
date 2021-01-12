@@ -19,11 +19,13 @@ export default function addition(levelno) {
             num2 += gen2.toString();
             sol += (gen + gen2).toString();
         }
-        while (num1.startsWith("0")) {
-            num1 = num1.substr(1, num1.length);
-        }
-        while (num2.startsWith("0")) {
-            num2 = num2.substr(1, num2.length);
+        if (levelno !== 1) {
+            while (num1.startsWith("0")) {
+                num1 = num1.substr(1, num1.length);
+            }
+            while (num2.startsWith("0")) {
+                num2 = num2.substr(1, num2.length);
+            }
         }
         return {question: num1 + " + " + num2 + "= ", solution: sol};
     }

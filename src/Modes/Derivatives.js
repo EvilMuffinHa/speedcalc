@@ -15,7 +15,7 @@ let gcd = function(a, b) {
   };
 
 
-export default function differentiation(levelno) {
+export const differentiation = function(levelno) {
     math.derivative("x^2 + x", "x");
     let stdfx;
     let lvl = levelno;
@@ -209,5 +209,8 @@ export default function differentiation(levelno) {
         .replaceAll("acsc", "csc^{-1}")
         .replaceAll("acot", "cot^{-1}");
     return {question:fx, solution:deriv};
+};
+export default function derivative(levelno) {
+    let q = differentiation(levelno);
+    return { question:`\\frac{d}{dx}{${q.question}}`, solution:q.solution};
 }
-
