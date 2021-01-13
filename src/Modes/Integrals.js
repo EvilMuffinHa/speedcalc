@@ -7,5 +7,6 @@ export default function integration(levelno) {
     while (inverse.solution === "0") {
         inverse = differentiation(levelno);
     }
-    return {question:"\\int{" + inverse.solution + "}\\hspace{2mm}dx", solution:inverse.question + " + C"};
+    return {question:"\\displaystyle\\int{" + inverse.solution + "}\\hspace{2mm}\\text{dx}",
+        solution:"\\displaystyle"+ inverse.question + " + C"};
 }

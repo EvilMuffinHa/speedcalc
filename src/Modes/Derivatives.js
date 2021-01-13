@@ -212,5 +212,5 @@ export const differentiation = function(levelno) {
 };
 export default function derivative(levelno) {
     let q = differentiation(levelno);
-    return { question:`\\frac{d}{dx}{${q.question}}`, solution:q.solution};
+    return { question:`\\displaystyle\\frac{\\text{d}}{\\text{dx}}{${q.question}}`, solution:"\\displaystyle" + q.solution};
 }
